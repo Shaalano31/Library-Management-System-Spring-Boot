@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,17 +43,10 @@ public class BookService {
         }
     }
 
-    public void addNewBook(Book book) {
-        isEmpty(book.getAuthor(), "Author");
-        isEmpty(book.getTitle(), "Title");
-        isEmpty(book.getYear().toString(), "Year");
-        if(book.getYear() > LocalDate.now().getYear()) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Year of publication is invalid");
-        }
-        isEmpty(book.getIsbn().toString(), "ISBN");
-
+    public ResponseEntity addNewBook(Book book) {
+        validations(book);
         bookRepository.save(book);
+        return ResponseEntity.ok("Patron added successfully");
     }
 
     @Transactional
@@ -62,10 +56,27 @@ public class BookService {
                         "Book with id: " + id + " does not exist"
                 ));
 
-        book.setTitle(title);
-        book.setAuthor(author);
-        book.setYear(year);
-        book.setIsbn(isbn);
+        if (title != null &&
+                !title.isEmpty() &&
+                !Objects.equals(book.getTitle(), title)) {
+            book.setTitle(title);
+        }
+
+        if (author != null &&
+                !author.isEmpty() &&
+                !Objects.equals(book.getAuthor(), author)) {
+            book.setAuthor(author);
+        }
+
+        if (year != null &&
+                !Objects.equals(book.getYear(), year)) {
+            book.setYear(year);
+        }
+
+        if (isbn != null &&
+                !Objects.equals(book.getIsbn(), isbn)) {
+            book.setIsbn(isbn);
+        }
     }
 
     public void deleteBook(Long id) {
@@ -77,5 +88,16 @@ public class BookService {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, name + " is required");
         }
+    }
+
+    public void validations(Book book) {
+        isEmpty(book.getAuthor(), "Author");
+        isEmpty(book.getTitle(), "Title");
+        isEmpty(book.getYear().toString(), "Year");
+        if(book.getYear() > LocalDate.now().getYear()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Year of publication is invalid");
+        }
+        isEmpty(book.getIsbn().toString(), "ISBN");
     }
 }
