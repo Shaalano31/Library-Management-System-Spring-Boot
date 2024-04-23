@@ -2,7 +2,6 @@ package com.example.demo.patron;
 
 import com.example.demo.borrowing.Borrowing;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 
 import java.util.Set;
 
@@ -24,7 +23,6 @@ public class Patron {
     private Long id;
     private String name;
     private Integer phone;
-    @Email(message = "Please provide a valid email address")
     private String email;
 
     @OneToMany(mappedBy = "patron")

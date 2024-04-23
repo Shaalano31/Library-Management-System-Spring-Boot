@@ -1,6 +1,7 @@
 package com.example.demo.patron;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +19,18 @@ public class PatronController {
     }
 
     @GetMapping
-    public List<Patron> getPatrons() {
+    public ResponseEntity<List<Patron>> getPatrons() {
         return patronService.getPatrons();
     }
 
     @GetMapping("/{id}")
-    public Optional<Patron> getPatronById(@PathVariable Long id) {
+    public ResponseEntity<Optional<Patron>> getPatronById(@PathVariable Long id) {
         return patronService.getPatronById(id);
     }
 
     @PostMapping
-    public void addPatron(@RequestBody Patron patron) {
-        patronService.addNewPatron(patron);
+    public ResponseEntity addPatron(@RequestBody Patron patron) {
+        return patronService.addNewPatron(patron);
     }
 
     @PutMapping("/{id}")

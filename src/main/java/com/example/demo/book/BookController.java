@@ -1,6 +1,7 @@
 package com.example.demo.book;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,12 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getBooks() {
+    public ResponseEntity<List<Book>> getBooks() {
         return bookService.getBooks();
     }
 
     @GetMapping("/{id}")
-    public Optional<Book> getBookById(@PathVariable Long id) {
+    public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id) {
         return bookService.getBooksById(id);
     }
 
