@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,6 +20,7 @@ import java.util.Optional;
 @Service
 public class PatronService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PatronService.class);
     private final PatronRepository patronRepository;
 
     @Autowired
@@ -25,10 +29,12 @@ public class PatronService {
     }
 
     public List<Patron> getPatrons() {
+        logger.info("Fetching all patrons");
         return patronRepository.findAll();
     }
 
     public Optional<Patron> getPatronById(Long id) {
+        logger.info("Fetching patron from db with id {}", id);
         return patronRepository.findById(id);
     }
 
@@ -38,7 +44,7 @@ public class PatronService {
         uniqueEmail(patron.getEmail());
         isEmpty(patron.getName(), "Name");
         isEmpty(patron.getPhone().toString(), "Phone");
-
+        logger.info("Patron Added");
         return patronRepository.save(patron);
     }
 
@@ -66,10 +72,12 @@ public class PatronService {
                 !Objects.equals(patron.getPhone(), phone)) {
             patron.setPhone(phone);
         }
+        logger.info("Patron with id {} updated", id);
     }
 
     public void deletePatron(Long id) {
         patronRepository.deleteById(id);
+        logger.info("Patron with id {} deleted", id);
     }
 
     // UTIL FUNCTIONS

@@ -6,9 +6,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class BorrowingService {
 
+    private static final Logger logger = LoggerFactory.getLogger(BorrowingService.class);
     private final BorrowingRepository borrowingRepository;
 
     public BorrowingService(BorrowingRepository borrowingRepository) {
@@ -18,6 +22,7 @@ public class BorrowingService {
     public void borrowNewBook(Borrowing borrowing) {
         borrowing.setBorrow_date(LocalDate.now());
         borrowingRepository.save(borrowing);
+        logger.info("Book Borrowed");
     }
 
     public void returnBook(Long id) {
@@ -28,5 +33,6 @@ public class BorrowingService {
 
         borrowing.setReturn_date(LocalDate.now());
         borrowingRepository.save(borrowing);
+        logger.info("Book Returned");
     }
 }

@@ -41,7 +41,7 @@ public class BookController {
     @PostMapping
     public ResponseEntity addBook(@RequestBody Book book) {
         bookService.addNewBook(book);
-        return ResponseEntity.ok("Patron added successfully");
+        return ResponseEntity.ok("Book added successfully");
     }
 
     @PutMapping("/{id}")
