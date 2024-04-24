@@ -1,6 +1,9 @@
-package com.example.demo.patron;
+package com.example.demo.controller;
 
+import com.example.demo.model.Patron;
+import com.example.demo.service.PatronService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +23,25 @@ public class PatronController {
 
     @GetMapping
     public ResponseEntity<List<Patron>> getPatrons() {
-        return patronService.getPatrons();
+        List<Patron> results = patronService.getPatrons();
+        return ResponseEntity.ok(results);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Patron>> getPatronById(@PathVariable Long id) {
-        return patronService.getPatronById(id);
+        Optional<Patron> patron = patronService.getPatronById(id);
+        if (patron.isPresent()) {
+            return ResponseEntity.ok(patron);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PostMapping
     public ResponseEntity addPatron(@RequestBody Patron patron) {
-        return patronService.addNewPatron(patron);
+        patronService.addNewPatron(patron);
+        return ResponseEntity.ok("Patron added successfully");
     }
 
     @PutMapping("/{id}")

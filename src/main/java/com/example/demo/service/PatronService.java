@@ -1,5 +1,7 @@
-package com.example.demo.patron;
+package com.example.demo.service;
 
+import com.example.demo.model.Patron;
+import com.example.demo.repository.PatronRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,35 +24,22 @@ public class PatronService {
         this.patronRepository = patronRepository;
     }
 
-    public ResponseEntity<List<Patron>> getPatrons() {
-        List<Patron> results =  patronRepository.findAll();
-        if(results.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        else {
-            return ResponseEntity.ok(results);
-        }
+    public List<Patron> getPatrons() {
+        return patronRepository.findAll();
     }
 
-    public ResponseEntity<Optional<Patron>> getPatronById(Long id) {
-        Optional<Patron> patron = patronRepository.findById(id);
-        if (patron.isPresent()) {
-            return ResponseEntity.ok(patron);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    public Optional<Patron> getPatronById(Long id) {
+        return patronRepository.findById(id);
     }
 
-    public ResponseEntity addNewPatron(@RequestBody Patron patron) {
+    public Patron addNewPatron(@RequestBody Patron patron) {
 
         isEmpty(patron.getEmail(), "Email");
         uniqueEmail(patron.getEmail());
         isEmpty(patron.getName(), "Name");
         isEmpty(patron.getPhone().toString(), "Phone");
 
-        patronRepository.save(patron);
-        return ResponseEntity.ok("Patron added successfully");
+        return patronRepository.save(patron);
     }
 
     @Transactional

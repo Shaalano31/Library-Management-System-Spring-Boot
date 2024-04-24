@@ -1,6 +1,9 @@
-package com.example.demo.book;
+package com.example.demo.controller;
 
+import com.example.demo.service.BookService;
+import com.example.demo.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +23,25 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getBooks() {
-        return bookService.getBooks();
+        List<Book> results = bookService.getBooks();
+        return ResponseEntity.ok(results);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Book>> getBookById(@PathVariable Long id) {
-        return bookService.getBooksById(id);
+        Optional<Book> book = bookService.getBooksById(id);
+        if (book.isPresent()) {
+            return ResponseEntity.ok(book);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PostMapping
     public ResponseEntity addBook(@RequestBody Book book) {
-        return bookService.addNewBook(book);
+        bookService.addNewBook(book);
+        return ResponseEntity.ok("Patron added successfully");
     }
 
     @PutMapping("/{id}")

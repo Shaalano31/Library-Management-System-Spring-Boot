@@ -1,6 +1,8 @@
 package com.example.demo.patron;
 
-import com.example.demo.book.Book;
+import com.example.demo.model.Patron;
+import com.example.demo.repository.PatronRepository;
+import com.example.demo.service.PatronService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,10 +32,10 @@ class PatronServiceTest {
         Patron patron = new Patron("Khaled", 1000, "test@gmail.com");
         Patron patron2 = new Patron("Khaled2", 1200, "test2@gmail.com");
 
-        ResponseEntity savedPatron = patronService.addNewPatron(patron);
-        ResponseEntity savedPatron2 = patronService.addNewPatron(patron2);
+        Patron savedPatron = patronService.addNewPatron(patron);
+        Patron savedPatron2 = patronService.addNewPatron(patron2);
 
-        ResponseEntity<List<Patron>> savePatron = patronService.getPatrons();
+        List<Patron> savePatron = patronService.getPatrons();
 
         assertThat(savePatron).isNotNull();
     }
@@ -44,7 +46,7 @@ class PatronServiceTest {
 
         when(patronRepository.findById(1L)).thenReturn(Optional.ofNullable(patron));
 
-        ResponseEntity savedPatron = patronService.getPatronById(1L);
+        Optional<Patron> savedPatron = patronService.getPatronById(1L);
 
         assertThat(savedPatron).isNotNull();
     }
@@ -55,7 +57,7 @@ class PatronServiceTest {
 
         when(patronRepository.save(Mockito.any(Patron.class))).thenReturn(patron);
 
-        ResponseEntity savedPatron = patronService.addNewPatron(patron);
+        Patron savedPatron = patronService.addNewPatron(patron);
 
         assertThat(savedPatron).isNotNull();
     }
@@ -66,8 +68,8 @@ class PatronServiceTest {
 
         when(patronRepository.findById(1L)).thenReturn(Optional.ofNullable(patron));
 
-        ResponseEntity savedPatron = patronService.addNewPatron(patron);
-        ResponseEntity savedPatron2 = patronService.getPatronById(1L);
+        Patron savedPatron = patronService.addNewPatron(patron);
+        Optional<Patron> savedPatron2 = patronService.getPatronById(1L);
 
         assertAll(() -> patronService.deletePatron(1L));
     }

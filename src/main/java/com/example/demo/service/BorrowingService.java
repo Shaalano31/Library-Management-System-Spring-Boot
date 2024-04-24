@@ -1,6 +1,7 @@
-package com.example.demo.borrowing;
+package com.example.demo.service;
 
-import com.example.demo.book.Book;
+import com.example.demo.model.Borrowing;
+import com.example.demo.repository.BorrowingRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

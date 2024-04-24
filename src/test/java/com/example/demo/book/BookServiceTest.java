@@ -1,6 +1,9 @@
 package com.example.demo.book;
 
 
+import com.example.demo.model.Book;
+import com.example.demo.repository.BookRepository;
+import com.example.demo.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,10 +33,10 @@ class BookServiceTest {
         Book book = new Book("Khaled", "Khaled2", 2000, 2037);
         Book book2 = new Book("Khaled", "Khaled2", 2000, 2037);
 
-        ResponseEntity savedBook = bookService.addNewBook(book);
-        ResponseEntity savedBook2 = bookService.addNewBook(book2);
+        Book savedBook = bookService.addNewBook(book);
+        Book savedBook2 = bookService.addNewBook(book2);
 
-        ResponseEntity<List<Book>> saveBook = bookService.getBooks();
+        List<Book> saveBook = bookService.getBooks();
 
         assertThat(saveBook).isNotNull();
     }
@@ -44,7 +47,7 @@ class BookServiceTest {
 
         when(bookRepository.findById(1L)).thenReturn(Optional.ofNullable(book));
 
-        ResponseEntity savedBook = bookService.getBooksById(1L);
+        Optional<Book> savedBook = bookService.getBooksById(1L);
 
         assertThat(savedBook).isNotNull();
     }
@@ -55,7 +58,7 @@ class BookServiceTest {
 
         when(bookRepository.save(Mockito.any(Book.class))).thenReturn(book);
 
-        ResponseEntity savedBook = bookService.addNewBook(book);
+        Book savedBook = bookService.addNewBook(book);
 
         assertThat(savedBook).isNotNull();
     }
@@ -66,8 +69,8 @@ class BookServiceTest {
 
         when(bookRepository.findById(1L)).thenReturn(Optional.ofNullable(book));
 
-        ResponseEntity savedBook = bookService.addNewBook(book);
-        ResponseEntity savedBook2 = bookService.getBooksById(1L);
+        Book savedBook = bookService.addNewBook(book);
+        Optional<Book> savedBook2 = bookService.getBooksById(1L);
 
         assertAll(() -> bookService.deleteBook(1L));
     }

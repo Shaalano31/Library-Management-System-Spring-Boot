@@ -1,13 +1,11 @@
-package com.example.demo.borrowing;
+package com.example.demo.model;
 
-import com.example.demo.book.Book;
-import com.example.demo.patron.Patron;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Table
+@Table (uniqueConstraints = { @UniqueConstraint(name = "UniqueBookAndPatron", columnNames = { "book_id", "patron_id" })})
 public class Borrowing {
 
     @Id

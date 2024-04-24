@@ -1,6 +1,7 @@
-package com.example.demo.book;
+package com.example.demo.service;
 
-import com.example.demo.patron.Patron;
+import com.example.demo.model.Book;
+import com.example.demo.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,30 +24,17 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public ResponseEntity<List<Book>> getBooks() {
-        List<Book> results =  bookRepository.findAll();
-        if(results.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        else {
-            return ResponseEntity.ok(results);
-        }
+    public List<Book> getBooks() {
+        return bookRepository.findAll();
     }
 
-    public ResponseEntity<Optional<Book>> getBooksById(Long id) {
-        Optional<Book> book = bookRepository.findById(id);
-        if (book.isPresent()) {
-            return ResponseEntity.ok(book);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    public Optional<Book> getBooksById(Long id) {
+        return bookRepository.findById(id);
     }
 
-    public ResponseEntity addNewBook(Book book) {
+    public Book addNewBook(Book book) {
         validations(book);
-        bookRepository.save(book);
-        return ResponseEntity.ok("Patron added successfully");
+        return bookRepository.save(book);
     }
 
     @Transactional

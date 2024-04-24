@@ -1,5 +1,7 @@
-package com.example.demo.borrowing;
+package com.example.demo.controller;
 
+import com.example.demo.service.BorrowingService;
+import com.example.demo.model.Borrowing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

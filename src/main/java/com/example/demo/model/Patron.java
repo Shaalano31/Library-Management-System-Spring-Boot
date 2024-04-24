@@ -1,6 +1,5 @@
-package com.example.demo.patron;
+package com.example.demo.model;
 
-import com.example.demo.borrowing.Borrowing;
 import jakarta.persistence.*;
 
 import java.util.Set;
